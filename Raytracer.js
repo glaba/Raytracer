@@ -19,7 +19,7 @@ function Raytracer(cameraX, cameraY, cameraZ, cameraDirection, cameraLeft, objec
 	this.lights = lights;
 
 	// Temporary
-	this.angle = Math.PI / 2;
+	this.angle = 3 * Math.PI / 2;
 }
 
 /**
@@ -62,12 +62,12 @@ Raytracer.prototype.render = function(canvas, scaleFactor) {
 			}
 
 			if (closestObjectIndex >= 0) {
-				var originatingNormal = this.objects[closestObjectIndex].getNormalAt(rayIntersection.x, rayIntersection.y, rayIntersection.z);
+				var originatingNormal = this.objects[closestObjectIndex].getNormalAt(closestObjectIntersection.x, closestObjectIntersection.y, closestObjectIntersection.z);
 				if (dot(originatingNormal, curDirection) > 0) {
 					originatingNormal = vMult(originatingNormal, -1);
 				}
 
-				var color = this.objects[closestObjectIndex].getColorAt(rayIntersection.x, rayIntersection.y, rayIntersection.z, this.lights, this.objects, originatingNormal);
+				var color = this.objects[closestObjectIndex].getColorAt(closestObjectIntersection.x, closestObjectIntersection.y, closestObjectIntersection.z, this.lights, this.objects, originatingNormal, closestObjectIndex);
 				var pixelIndex = Math.floor(y) * canvas.width + Math.floor(x);
 				imageData[4 * pixelIndex + 0] = color.x;
 				imageData[4 * pixelIndex + 1] = color.y;
@@ -79,10 +79,16 @@ Raytracer.prototype.render = function(canvas, scaleFactor) {
 
 	canvas.getContext("2d").putImageData(image, 0, 0)
 
-	this.angle += Math.PI / 24;
-	this.angle = this.angle % Math.PI;
-	this.updateCoordinateAxes(vector(Math.cos(this.angle), Math.sin(this.angle), 0), vector(Math.cos(this.angle + Math.PI / 2), Math.sin(this.angle + Math.PI / 2), 0));
+	this.cameraX = 5 * Math.cos(this.angle);
+	this.cameraY = 5 * Math.sin(this.angle);
+	console.log(this.cameraX, this.cameraY);
+	this.cameraZ = 0;
+	this.updateCoordinateAxes(vector(Math.cos(this.angle), -Math.sin(this.angle), 0), vector(Math.sin(this.angle), Math.cos(this.angle), 0));
+	this.angle += Math.PI / 16;
+	//this.angle = this.angle % Math.PI;
+	//this.updateCoordinateAxes(vector(Math.cos(this.angle), Math.sin(this.angle), 0), vector(Math.cos(this.angle + Math.PI / 2), Math.sin(this.angle + Math.PI / 2), 0));
 	setTimeout(() => { this.render(canvas, scaleFactor); }, 0);
+
 };
 
 Raytracer.prototype.updateCoordinateAxes = function(direction, cameraLeft) {
