@@ -1,6 +1,6 @@
-function Light(x, y, z, color) {
+function Light(x, y, z, intensity) {
 	this.x = x;
 	this.y = y;
 	this.z = z;
-	this.color = color;
+	this.intensity
 }
