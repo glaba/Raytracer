@@ -3,7 +3,7 @@ var magnitude = function(a) {
 };
 
 var distance = function(x1, y1, z1, x2, y2, z2) {
-	return magnitude({x: x2 - x1, y: y2 - y1, z: z2 - z1});
+	return Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1) + (z2 - z1)*(z2 - z1));
 };
 
 var vDiv = function(a, b, result) {
@@ -51,6 +51,13 @@ var cross = function(a, b, result) {
 
 var vector = function(x, y, z) {
 	return {x: x, y: y, z: z};
+};
+
+var setVector = function(v, x, y, z) {
+	v.x = x;
+	v.y = y;
+	v.z = z;
+	return v;
 };
 
 var angle = function(a, b) {
