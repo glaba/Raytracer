@@ -6,52 +6,47 @@ var distance = function(x1, y1, z1, x2, y2, z2) {
 	return magnitude({x: x2 - x1, y: y2 - y1, z: z2 - z1});
 };
 
-var vDiv = function(a, b) {
-	var c = {};
-	c.x = a.x / b;
-	c.y = a.y / b;
-	c.z = a.z / b;
-	return c;
+var vDiv = function(a, b, result) {
+	result.x = a.x / b;
+	result.y = a.y / b;
+	result.z = a.z / b;
+	return result;
 };
 
-var vMult = function(a, b) {
-	var c = {};
-	c.x = a.x * b;
-	c.y = a.y * b;
-	c.z = a.z * b;
-	return c;
+var vMult = function(a, b, result) {
+	result.x = a.x * b;
+	result.y = a.y * b;
+	result.z = a.z * b;
+	return result;
 };
 
-var vAdd = function(a, b) {
-	var c = {};
-	c.x = a.x + b.x;
-	c.y = a.y + b.y;
-	c.z = a.z + b.z;
-	return c;
+var vAdd = function(a, b, result) {
+	result.x = a.x + b.x;
+	result.y = a.y + b.y;
+	result.z = a.z + b.z;
+	return result;
 }
 
-var vSub = function(a, b) {
-	var c = {};
-	c.x = a.x - b.x;
-	c.y = a.y - b.y;
-	c.z = a.z - b.z;
-	return c;
+var vSub = function(a, b, result) {
+	result.x = a.x - b.x;
+	result.y = a.y - b.y;
+	result.z = a.z - b.z;
+	return result;
 };
 
 var unit = function(a) {
-	return vDiv(a, magnitude(a));
+	return vDiv(a, magnitude(a), a);
 };
 
 var dot = function(a, b) {
 	return a.x * b.x + a.y * b.y + a.z * b.z;
 };
 
-var cross = function(a, b) {
-	var c = {};
-	c.x = a.y * b.z - a.z * b.y;
-	c.y = a.z * b.x - a.x * b.z;
-	c.z = a.x * b.y - a.y * b.x;
-	return c;
+var cross = function(a, b, result) {
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = a.z * b.x - a.x * b.z;
+	result.z = a.x * b.y - a.y * b.x;
+	return result;
 };
 
 var vector = function(x, y, z) {
