@@ -9,9 +9,10 @@ $(function() {
 	canvas.width = 1000 / FACTOR;
 	canvas.height = 800 / FACTOR;
 
-	var rectangles = [new Rectangle(vector(-1, 1, 1), vector(1, 1, 1), vector(-1, 1, -1), vector(0, 0, 200), 0.3, 0.7),
-	                  new Rectangle(vector(-1, -1, 1), vector(1, -1, 1), vector(-1, -1, -1), vector(0, 200, 0), 0.29, 0.7)];
-	tracer = new Raytracer(0, -5, 0, unit(vector(0, 5, 0)), unit(vector(-5, 0, 0)), rectangles, [new Light(0, 0.5, 0, 1)]);
+	var rectangles = [new Rectangle(vector(-1, 1, 1), vector(1, 1, 1), vector(-1, 1, -1), vector(0, 0, 200), 0.1, 0.9),
+	                  new Rectangle(vector(-1, -1, 1), vector(1, -1, 1), vector(-1, -1, -1), vector(0, 200, 0), 0.1, 0.9),
+	                  new Rectangle(vector(-100, -100, -1), vector(100, -100, -1), vector(-100, 100, -1), vector(200, 0, 0), 0.1, 0.9)];
+	tracer = new Raytracer(0, -5, 0, unit(vector(0, 5, 0)), unit(vector(-5, 0, 0)), rectangles, [new Light(0, -5, 0, 1)]);
 
 	document.addEventListener("keydown", function(e) {
 		if (e.keyCode == 38) {

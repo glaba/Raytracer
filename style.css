@@ -1,4 +1,15 @@
 #rayTracerCanvas {
-	width: 1000;
-	height: 800;
+	position: absolute;
+	width: auto;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	transform: translate(-50%, 0%);
+	left: 50%;
+}
+
+body {
+	background-color: #444444;
+	margin: 0;
+	padding: 0;
 }

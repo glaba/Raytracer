@@ -34,6 +34,12 @@ var vSub = function(a, b, result) {
 	return result;
 };
 
+var copyVector = function(src, dest) {
+	dest.x = src.x;
+	dest.y = src.y;
+	dest.z = src.z;
+};
+
 var unit = function(a) {
 	return vDiv(a, magnitude(a), a);
 };
