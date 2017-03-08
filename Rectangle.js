@@ -94,8 +94,13 @@ Rectangle.prototype.getNormalAt = function(x, y, z) {
 Rectangle.prototype.intersectsRay = function(origin, direction) {
 	var t = dot(this.normal, vSub(this.origin, origin, this.rayIntermediate)) / dot(this.normal, direction);
 	
-	vAdd(origin, vMult(direction, t, direction), this.curIntersectionPoint);
+	if (Math.random() < 0.000001 && this.ambientConstant == 0.29) {
+		//console.log(t);
+		//console.log(this.curIntersectionPoint);
+		console.log(direction);
+	}
 
+	vAdd(origin, vMult(direction, t, direction), this.curIntersectionPoint);
 	
 	if (t > 0 &&
 		floatEq(angle(vSub(this.curIntersectionPoint, this.topLeft, this.intersectsRayAngle1), vSub(this.topRight, this.topLeft, this.intersectsRayAngle2)) +

@@ -10,9 +10,6 @@
  * @param lights An array of light sources (of type Light) in the scene
  */
 function Raytracer(cameraX, cameraY, cameraZ, cameraDirection, cameraLeft, objects, lights) {
-	this.cameraX = cameraX;
-	this.cameraY = cameraY;
-	this.cameraZ = cameraZ;
 	this.cameraOrigin = vector(cameraX, cameraY, cameraZ);
 	this.cameraLeft = {};
 	this.cameraTop = {};
@@ -20,13 +17,11 @@ function Raytracer(cameraX, cameraY, cameraZ, cameraDirection, cameraLeft, objec
 	this.objects = objects;
 	this.lights = lights;
 
-	// Temporary
-	this.angle = 4 * Math.PI / 2;
-
 	this.frameBuffer = vector(0, 0, 0);
 	this.newCameraDirection = vector(0, 0, 0);
 	this.newCameraLeft = vector(0, 0, 0);
 	this.renderFunction = this.render.bind(this);
+	this.motionVector = vector(0, 0, 0);
 }
 
 /**
@@ -50,20 +45,20 @@ Raytracer.prototype.render = function(tempCanvas, scaleFactor, width, height) {
 
 	for (var x = 0; x < width; x++) {
 		for (var y = 0; y < height; y++) {
-			var frameBufferX = this.cameraX + this.cameraDirection.x - this.cameraLeft.x * (x - (width - 1) / 2) - this.cameraTop.x * (y - (height - 1) / 2);
-			var frameBufferY = this.cameraY + this.cameraDirection.y - this.cameraLeft.y * (x - (width - 1) / 2) - this.cameraTop.y * (y - (height - 1) / 2);
-			var frameBufferZ = this.cameraZ + this.cameraDirection.z - this.cameraLeft.z * (x - (width - 1) / 2) - this.cameraTop.z * (y - (height - 1) / 2);
+			var frameBufferX = this.cameraOrigin.x + this.cameraDirection.x - this.cameraLeft.x * (x - (width - 1) / 2) - this.cameraTop.x * (y - (height - 1) / 2);
+			var frameBufferY = this.cameraOrigin.y + this.cameraDirection.y - this.cameraLeft.y * (x - (width - 1) / 2) - this.cameraTop.y * (y - (height - 1) / 2);
+			var frameBufferZ = this.cameraOrigin.z + this.cameraDirection.z - this.cameraLeft.z * (x - (width - 1) / 2) - this.cameraTop.z * (y - (height - 1) / 2);
 
 			var curDirection = {}; 
 			this.frameBuffer.x = frameBufferX;
 			this.frameBuffer.y = frameBufferY;
 			this.frameBuffer.z = frameBufferZ;
-			vSub(this.frameBuffer, this.cameraOrigin, curDirection);
 
 			var closestObjectIndex = -1;
 			var closestObjectIntersection = null;
 			var closestObjectDistance = 100000;
 			for (var i = 0; i < this.objects.length; i++) {
+				vSub(this.frameBuffer, this.cameraOrigin, curDirection);
 				var rayIntersection = this.objects[i].intersectsRay(this.cameraOrigin, curDirection);
 
 				if (rayIntersection) {
@@ -94,7 +89,7 @@ Raytracer.prototype.render = function(tempCanvas, scaleFactor, width, height) {
 
 	context.putImageData(image, 0, 0);
 
-	this.angle += Math.PI / 16;
+	/*this.angle += Math.PI / 16;
 	this.cameraX = 5 * Math.cos(this.angle);
 	this.cameraY = 5 * Math.sin(this.angle);
 	this.cameraZ = 0;
@@ -102,10 +97,29 @@ Raytracer.prototype.render = function(tempCanvas, scaleFactor, width, height) {
 	this.cameraOrigin.y = this.cameraY;
 	this.cameraOrigin.z = this.cameraZ;
 	this.updateCoordinateAxes(setVector(this.newCameraDirection, -Math.cos(this.angle), -Math.sin(this.angle), 0), setVector(this.newCameraLeft, Math.sin(this.angle), -Math.cos(this.angle), 0));
-	
-	//console.log(this.cameraX, this.cameraY, "   ", this.cameraDirection.x, this.cameraDirection.y, "   ", this.cameraLeft.x, this.cameraLeft.y, "   ", this.cameraTop.x, this.cameraTop.y, this.cameraTop.z);
-	//this.angle = this.angle % Math.PI;
-	//this.updateCoordinateAxes(vector(Math.cos(this.angle), Math.sin(this.angle), 0), vector(Math.cos(this.angle + Math.PI / 2), Math.sin(this.angle + Math.PI / 2), 0));
+	*/
+
+	if (this.movingForward) {
+		vAdd(this.cameraOrigin, vMult(this.cameraDirection, 0.1, this.motionVector), this.cameraOrigin);
+		vAdd(this.lights[0], this.motionVector, this.lights[0]);
+	}
+	if (this.movingBackward) {
+		vAdd(this.cameraOrigin, vMult(this.cameraDirection, -0.1, this.motionVector), this.cameraOrigin);
+		vAdd(this.lights[0], this.motionVector, this.lights[0]);
+	}
+	if (this.turningLeft) {
+		var curAngle = Math.atan2(this.cameraDirection.y, this.cameraDirection.x);
+		curAngle += 0.03;
+		this.updateCoordinateAxes(setVector(this.newCameraDirection, Math.cos(curAngle), Math.sin(curAngle), 0), 
+			                 setVector(this.newCameraLeft, -Math.sin(curAngle), Math.cos(curAngle), 0));
+	}
+	if (this.turningRight) {
+		var curAngle = Math.atan2(this.cameraDirection.y, this.cameraDirection.x);
+		curAngle -= 0.03;
+		this.updateCoordinateAxes(setVector(this.newCameraDirection, Math.cos(curAngle), Math.sin(curAngle), 0), 
+			                 setVector(this.newCameraLeft, -Math.sin(curAngle), Math.cos(curAngle), 0));
+	}
+
 	setTimeout(this.render.bind(this, tempCanvas, scaleFactor, width, height), 0);
 };
 
@@ -113,5 +127,5 @@ Raytracer.prototype.updateCoordinateAxes = function(direction, cameraLeft) {
 	this.cameraDirection = direction;
 	this.cameraLeft = cameraLeft;
 	unit(this.cameraLeft);
-	this.cameraTop = unit(cross(direction, cameraLeft, this.cameraTop));
+	unit(cross(direction, cameraLeft, this.cameraTop));
 };
