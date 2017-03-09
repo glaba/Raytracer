@@ -114,12 +114,12 @@ Raytracer.prototype.moveCamera = function(collides) {
 	}
 	if (this.movingUpward) {
 		unit(this.cameraTop);
-		vAdd(this.cameraOrigin, vMult(this.cameraTop, 0.5, this.verticalMotionVector), this.cameraOrigin);
+		vAdd(this.cameraOrigin, vMult(this.cameraTop, 0.500001, this.verticalMotionVector), this.cameraOrigin);
 		vAdd(this.lights[0], this.verticalMotionVector, this.lights[0]);
 	}
 	if (this.movingDownward) {
 		unit(this.cameraTop);
-		vAdd(this.cameraOrigin, vMult(this.cameraTop, -0.5, this.verticalMotionVector), this.cameraOrigin);
+		vAdd(this.cameraOrigin, vMult(this.cameraTop, -0.500001, this.verticalMotionVector), this.cameraOrigin);
 		vAdd(this.lights[0], this.verticalMotionVector, this.lights[0]);
 	}
 	if (this.movingForward || this.movingBackward || this.movingUpward || this.movingDownward) {
