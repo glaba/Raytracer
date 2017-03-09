@@ -1,7 +1,7 @@
 var maze;
 var canvas;
 var tempCanvas;
-var FACTOR = 10;
+var FACTOR = 11;
 var workers;
 
 $(function() {
@@ -13,7 +13,7 @@ $(function() {
 	tempCanvas.width = canvas.width;
 	tempCanvas.height = canvas.height;
 
-	maze = new Maze(6, 6);
+	maze = new Maze(2, 2);
 	var mazeRectangles = maze.createRectangles();
 	mazeRectangles.push([vector(-100, -100, -1), vector(100, -100, -1), vector(-100, 100, -1), vector(255, 0, 0), 0.1, 0.9]);
 
@@ -88,26 +88,26 @@ $(function() {
 		}(i);
 	}
 
-	workers[0].postMessage({W: "init", cameraX: 0, cameraY: -5, cameraZ: 0, width: canvas.width, height: canvas.height,
-                                       cameraDirection: unit(vector(0, 5, 0)), cameraLeft: unit(vector(-5, 0, 0)),
+	workers[0].postMessage({W: "init", cameraX: 0, cameraY: 0, cameraZ: 0, width: canvas.width, height: canvas.height,
+                                       cameraDirection: unit(vector(1, 0, 0)), cameraLeft: unit(vector(0, 1, 0)),
                                        objects: mazeRectangles,
                                        scaleFactor: 0.001 * FACTOR,
                                        lights: [{x: 0, y: -5, z: 0, intensity: 0.2}, {x: 0, y: -5, z: 0, intensity: 0.9}],
                                        xMin: 0, xMax: canvas.width / 2, yMin: 0, yMax: canvas.height / 2});
-	workers[1].postMessage({W: "init", cameraX: 0, cameraY: -5, cameraZ: 0, width: canvas.width, height: canvas.height,
-                                       cameraDirection: unit(vector(0, 5, 0)), cameraLeft: unit(vector(-5, 0, 0)),
+	workers[1].postMessage({W: "init", cameraX: 0, cameraY: 0, cameraZ: 0, width: canvas.width, height: canvas.height,
+                                       cameraDirection: unit(vector(1, 0, 0)), cameraLeft: unit(vector(0, 1, 0)),
                                        objects: mazeRectangles,
                                        scaleFactor: 0.001 * FACTOR,
                                        lights: [{x: 0, y: -5, z: 0, intensity: 0.2}, {x: 0, y: -5, z: 0, intensity: 0.9}],
                                        xMin: 0, xMax: canvas.width / 2, yMin: canvas.height / 2, yMax: canvas.height});
-	workers[2].postMessage({W: "init", cameraX: 0, cameraY: -5, cameraZ: 0, width: canvas.width, height: canvas.height,
-                                       cameraDirection: unit(vector(0, 5, 0)), cameraLeft: unit(vector(-5, 0, 0)),
+	workers[2].postMessage({W: "init", cameraX: 0, cameraY: 0, cameraZ: 0, width: canvas.width, height: canvas.height,
+                                       cameraDirection: unit(vector(1, 0, 0)), cameraLeft: unit(vector(0, 1, 0)),
                                        objects: mazeRectangles,
                                        scaleFactor: 0.001 * FACTOR,
                                        lights: [{x: 0, y: -5, z: 0, intensity: 0.2}, {x: 0, y: -5, z: 0, intensity: 0.9}],
                                        xMin: canvas.width / 2, xMax: canvas.width, yMin: 0, yMax: canvas.height / 2});
-	workers[3].postMessage({W: "init", cameraX: 0, cameraY: -5, cameraZ: 0, width: canvas.width, height: canvas.height,
-                                       cameraDirection: unit(vector(0, 5, 0)), cameraLeft: unit(vector(-5, 0, 0)),
+	workers[3].postMessage({W: "init", cameraX: 0, cameraY: 0, cameraZ: 0, width: canvas.width, height: canvas.height,
+                                       cameraDirection: unit(vector(1, 0, 0)), cameraLeft: unit(vector(0, 1, 0)),
                                        objects: mazeRectangles,
                                        scaleFactor: 0.001 * FACTOR,
                                        lights: [{x: 0, y: -5, z: 0, intensity: 0.2}, {x: 0, y: -5, z: 0, intensity: 0.9}],

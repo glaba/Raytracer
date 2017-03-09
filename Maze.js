@@ -1,16 +1,40 @@
 function Maze(width, height) {
-	this.width = width;
-	this.height = height;
+	// For purposes of this project, use a pre-generated maze that is 5x5
+	this.width = 6;
+	this.height = 6;
 	this.elements = [];
-	for (var x = 0; x < width; x++) {
+	for (var x = 0; x < this.width; x++) {
 		this.elements.push([]);
-		for (var y = 0; y < height; y++) {
-			this.elements[x].push({bottomBlocked: (Math.random() > 0), rightBlocked: (Math.random() > 0)});
+		for (var y = 0; y < this.height; y++) {
+			this.elements[x].push({bottomBlocked: false, rightBlocked: false});
 		}
 	}
-
-	// Random generate a path through the maze
-	
+	// Tens place represents bottom blocked, ones place represents rightblocked
+	/*var mazeObject = [
+		[10, 10, 10, 10, 01],
+		[00, 10, 10, 10, 11],
+		[10, 01, 10, 00, 01],
+		[01, 10, 10, 11, 00],
+		[10, 10, 10, 10, 11],
+	]*/
+	var mazeObject = [
+		[00, 00, 01, 01, 01, 01],
+		[10, 00, 01, 01, 01, 10],
+		[10, 01, 10, 00, 01, 11],
+		[10, 01, 11, 01, 01, 10],
+		[10, 01, 00, 01, 01, 11],
+		[10, 01, 01, 01, 01, 01]
+	];
+	for (var x = 0; x < this.width; x++) {
+		for (var y = 0; y < this.height; y++) {
+			if ((mazeObject[x][y] / 10) % 10 >= 1) {
+				this.elements[x][y].bottomBlocked = true;
+			}
+			if ((mazeObject[x][y] % 10 >= 1)) {
+				this.elements[x][y].rightBlocked = true;
+			}
+		}
+	}
 }
 
 // Returns an array of arrays containing the rectangle initialization parameters
@@ -28,5 +52,6 @@ Maze.prototype.createRectangles = function() {
 			}
 		}
 	}
+
 	return rectangles;
 };

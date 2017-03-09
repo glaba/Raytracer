@@ -27,8 +27,6 @@ function Rectangle(topLeft, topRight, bottomLeft, color, ambientConstant, diffus
 	this.intersectsRayAngle1 = vector(0, 0, 0);
 	this.intersectsRayAngle2 = vector(0, 0, 0);
 	this.rayIntermediate = vector(0, 0, 0);
-
-	this.tick = 0;
 };
 /**
  * Returns the color at a point on the rectangle
@@ -40,8 +38,6 @@ function Rectangle(topLeft, topRight, bottomLeft, color, ambientConstant, diffus
  * @param thisObjectIndex The index of this Rectangle in the objects array
  */
 Rectangle.prototype.getColorAt = function(x, y, z, visibleLights, objects, originatingNormal, thisObjectIndex) {
-	this.tick += 0.05;
-	this.tick = this.tick % 1;	
 	vMult(this.color, this.ambientConstant, this.totalColor);
 	this.curPoint.x = x;
 	this.curPoint.y = y;

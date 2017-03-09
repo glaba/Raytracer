@@ -5,7 +5,6 @@ var log = function(msg) {
 };
 
 var tracer;
-var value1 = 1;
 
 self.onmessage = function(event) {
 	var data = event.data;
@@ -39,7 +38,5 @@ self.onmessage = function(event) {
 		tracer.movingDownward = data.movingDownward;
 		tracer.turningUpward = data.turningUpward;
 		tracer.turningDownward = data.turningDownward;
-	} else if (data.W == "set") {
-		value1 = data.value;
 	}
 };
