@@ -27,6 +27,8 @@ function Rectangle(topLeft, topRight, bottomLeft, color, ambientConstant, diffus
 	this.intersectsRayAngle1 = vector(0, 0, 0);
 	this.intersectsRayAngle2 = vector(0, 0, 0);
 	this.rayIntermediate = vector(0, 0, 0);
+
+	this.tick = 0;
 };
 /**
  * Returns the color at a point on the rectangle
@@ -38,6 +40,8 @@ function Rectangle(topLeft, topRight, bottomLeft, color, ambientConstant, diffus
  * @param thisObjectIndex The index of this Rectangle in the objects array
  */
 Rectangle.prototype.getColorAt = function(x, y, z, visibleLights, objects, originatingNormal, thisObjectIndex) {
+	this.tick += 0.05;
+	this.tick = this.tick % 1;	
 	vMult(this.color, this.ambientConstant, this.totalColor);
 	this.curPoint.x = x;
 	this.curPoint.y = y;
@@ -70,7 +74,11 @@ Rectangle.prototype.getColorAt = function(x, y, z, visibleLights, objects, origi
 		var dotProduct = dot(this.lightVector, originatingNormal);
 		if (dotProduct > 0) {
 			var lightCoefficient = dotProduct / magnitude(this.lightVector) / magnitude(originatingNormal);		
-			vAdd(this.totalColor, vMult(this.color, visibleLights[i].intensity * lightCoefficient, this.curColor), this.totalColor);
+			this.totalColor.x = Math.min(this.totalColor.x + this.color.x * visibleLights[i].intensity * lightCoefficient, 255);
+			this.totalColor.y = Math.min(this.totalColor.y + this.color.y * visibleLights[i].intensity * lightCoefficient, 255);
+			this.totalColor.z = Math.min(this.totalColor.z + this.color.z * visibleLights[i].intensity * lightCoefficient, 255);
+			
+			//vAdd(this.totalColor, vMult(this.color, visibleLights[i].intensity * lightCoefficient, this.curColor), this.totalColor);
 		} else {
 			// Light is on the other side of the object, cannot be viewed
 			continue;
