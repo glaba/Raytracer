@@ -10,7 +10,6 @@
  * @param lights An array of light sources in the scene
  */
 function Raytracer(cameraX, cameraY, cameraZ, cameraDirection, cameraLeft, objects, lights, scaleFactor, width, height, xMin, xMax, yMin, yMax) {
-	this.outputBuffer = new Uint8Array(width / 2 * height / 2 * 4);
 	this.cameraOrigin = vector(cameraX, cameraY, cameraZ);
 	this.cameraLeft = {};
 	this.cameraTop = {};

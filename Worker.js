@@ -24,10 +24,12 @@ self.onmessage = function(event) {
 			                   data.scaleFactor, data.width, data.height,
 			                   data.xMin, data.xMax, data.yMin, data.yMax);
 	} else if (data.W == "calc") {
+		tracer.outputBuffer = data.outputBuffer;
 		tracer.calculate();
-		postMessage({xMin: tracer.xMin, xMax: tracer.xMax,
+		var output = {xMin: tracer.xMin, xMax: tracer.xMax,
 		             yMin: tracer.yMin, yMax: tracer.yMax,
-		             outputBuffer: tracer.outputBuffer});
+		             outputBuffer: tracer.outputBuffer};
+		postMessage(output, [output.outputBuffer.buffer]);
 	} else if (data.W == "moveCamera") {
 		tracer.movingForward = data.movingForward;
 		tracer.movingBackward = data.movingBackward;

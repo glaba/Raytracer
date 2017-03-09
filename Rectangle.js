@@ -77,8 +77,6 @@ Rectangle.prototype.getColorAt = function(x, y, z, visibleLights, objects, origi
 			this.totalColor.x = Math.min(this.totalColor.x + this.color.x * visibleLights[i].intensity * lightCoefficient, 255);
 			this.totalColor.y = Math.min(this.totalColor.y + this.color.y * visibleLights[i].intensity * lightCoefficient, 255);
 			this.totalColor.z = Math.min(this.totalColor.z + this.color.z * visibleLights[i].intensity * lightCoefficient, 255);
-			
-			//vAdd(this.totalColor, vMult(this.color, visibleLights[i].intensity * lightCoefficient, this.curColor), this.totalColor);
 		} else {
 			// Light is on the other side of the object, cannot be viewed
 			continue;
